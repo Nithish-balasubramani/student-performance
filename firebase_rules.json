@@ -1,0 +1,66 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": "$uid === auth.uid",
+        ".write": "$uid === auth.uid",
+        
+        "sensorData": {
+          ".validate": "newData.hasChildren(['moistureLevel', 'temperature', 'humidity', 'pumpStatus', 'waterUsage', 'timestamp', 'status'])",
+          
+          "moistureLevel": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100"
+          },
+          "temperature": {
+            ".validate": "newData.isNumber() && newData.val() >= -50 && newData.val() <= 100"
+          },
+          "humidity": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100"
+          },
+          "pumpStatus": {
+            ".validate": "newData.isBoolean()"
+          },
+          "waterUsage": {
+            ".validate": "newData.isNumber() && newData.val() >= 0"
+          },
+          "timestamp": {
+            ".validate": "newData.isString()"
+          },
+          "status": {
+            ".validate": "newData.isString()"
+          }
+        },
+        
+        "settings": {
+          ".validate": "newData.hasChildren(['moistureThreshold', 'cropType', 'autoMode', 'irrigationDuration'])",
+          
+          "moistureThreshold": {
+            ".validate": "newData.isNumber() && newData.val() >= 10 && newData.val() <= 80"
+          },
+          "cropType": {
+            ".validate": "newData.isString()"
+          },
+          "autoMode": {
+            ".validate": "newData.isBoolean()"
+          },
+          "irrigationDuration": {
+            ".validate": "newData.isNumber() && newData.val() >= 5 && newData.val() <= 120"
+          }
+        },
+        
+        "waterUsageHistory": {
+          "$historyId": {
+            ".validate": "newData.hasChildren(['amount', 'timestamp'])",
+            
+            "amount": {
+              ".validate": "newData.isNumber() && newData.val() >= 0"
+            },
+            "timestamp": {
+              ".validate": "newData.isString()"
+            }
+          }
+        }
+      }
+    }
+  }
+}
